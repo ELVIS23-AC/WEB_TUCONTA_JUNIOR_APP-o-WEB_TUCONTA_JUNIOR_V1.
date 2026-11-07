@@ -1,0 +1,174 @@
+<!-- Encabezado del Módulo -->
+<section class="modulo-header">
+    <span class="badge-superior">SIMULADOR INTERACTIVO SUNAT</span>
+    <h1>¿Cómo pagas tus impuestos?</h1>
+    <p>Alterna entre la calculadora del Nuevo RUS y la de Renta de Alquiler, o revisa las fichas técnicas inferiores.</p>
+</section>
+
+<!-- PANEL SUPERIOR DUAL EXTENDIDO -->
+<section class="panel-simulador-dual">
+
+    <!-- Selector Superior Dividido (Mitad Izquierda: Nuevo RUS | Mitad Derecha: Renta de Alquiler) -->
+    <div class="selector-mitades" role="tablist">
+        <button type="button" class="btn-mitad active" id="tab-nrus" onclick="alternarModoSimulador('nrus')">
+            <span class="indicador-tab verde"></span>
+            <div class="texto-mitad">
+                <strong>NUEVO RUS (NRUS)</strong>
+                <small>Regla interactiva por tramos (S/ 0 a S/ 8,000)</small>
+            </div>
+        </button>
+
+        <button type="button" class="btn-mitad" id="tab-alquiler" onclick="alternarModoSimulador('alquiler')">
+            <span class="indicador-tab celeste"></span>
+            <div class="texto-mitad">
+                <strong>RENTA DE ALQUILER</strong>
+                <small>Cálculo automático de arrendamiento (5%)</small>
+            </div>
+        </button>
+    </div>
+
+    <!-- =========================================================
+         MODO A: NUEVO RUS (REGLA S/ 0 A S/ 8,000 SIN CASILLAS EXTRA)
+         ========================================================= -->
+    <div class="cuerpo-modo" id="panel-modo-nrus">
+        
+        <div class="barra-estado-superior">
+            <span class="instruccion-texto">Desliza el control según tus ingresos o compras del mes y pulsa <b>Fijar Monto y Calcular</b>:</span>
+            <span class="indicador-estado" id="estado-preseleccion-nrus">Monto en regla: S/ 4,000</span>
+        </div>
+
+        <div class="zona-regla-nrus">
+            <div class="pista-slider-wrapper">
+                <!-- Burbuja Flotante Superior -->
+                <div class="burbuja-monto" id="burbuja-nrus">
+                    <span class="prefijo-moneda">S/</span>
+                    <span id="numero-burbuja-nrus">4,000</span>
+                </div>
+
+                <!-- Regla Deslizante (0 a 8000) -->
+                <input 
+                    type="range" 
+                    id="input-range-nrus" 
+                    class="slider-moderno" 
+                    min="0" 
+                    max="8000" 
+                    step="1" 
+                    value="4000"
+                    aria-label="Monto mensual Nuevo RUS"
+                >
+            </div>
+        </div>
+
+        <!-- Barra de Confirmación y Resultado Fijado (Encuadrado y Aislado) -->
+        <div class="pie-confirmacion-nrus">
+            <button type="button" class="btn-fijar-monto" id="btn-accion-fijar">
+                <span>✔</span> Fijar Monto y Calcular
+            </button>
+
+            <div class="tarjeta-resultado-fijo" id="caja-cuota-confirmada">
+                <div class="info-fijada">
+                    <strong id="titulo-monto-fijado">Monto fijado: S/ 4,000</strong>
+                    <span id="subtitulo-categoria-nrus">Categoría 1 · Hasta S/ 5,000 mensuales</span>
+                </div>
+                <div class="bloque-cuota-final">
+                    <span class="etiqueta-cuota">CUOTA MENSUAL NRUS</span>
+                    <strong class="monto-cuota-grande" id="valor-cuota-nrus">S/ 20.00</strong>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- =========================================================
+         MODO B: RENTA DE ALQUILER (CÁLCULO 5% + REDONDEO SUNAT)
+         ========================================================= -->
+    <div class="cuerpo-modo oculto" id="panel-modo-alquiler">
+        
+        <div class="grid-modo-alquiler">
+            <!-- Columna Izquierda: Entrada y Cálculo Instantáneo con Redondeo -->
+            <div class="columna-calc-alquiler">
+                <label for="input-alquiler-manual" class="label-alquiler">
+                    Ingresa o desliza el monto mensual del alquiler (S/):
+                </label>
+
+                <div class="caja-input-alquiler">
+                    <span class="simbolo-sol">S/</span>
+                    <input 
+                        type="number" 
+                        id="input-alquiler-manual" 
+                        min="0" 
+                        step="10" 
+                        value="1950" 
+                        placeholder="Ej. 1950"
+                    >
+                </div>
+
+                <input 
+                    type="range" 
+                    id="input-range-alquiler" 
+                    class="slider-moderno" 
+                    min="0" 
+                    max="15000" 
+                    step="10" 
+                    value="1950"
+                    aria-label="Monto de alquiler mensual"
+                >
+
+                <div class="caja-resultado-alquiler">
+                    <div class="texto-res-alquiler">
+                        <strong>Impuesto a Pagar (Redondeo SUNAT)</strong>
+                        <span id="detalle-exacto-alquiler">5% exacto: S/ 97.50 · Redondeado a S/ 98</span>
+                    </div>
+                    <strong class="cifra-impuesto-alquiler" id="valor-impuesto-alquiler">S/ 98.00</strong>
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Ficha Técnica Inyectada desde datos.js -->
+            <div class="columna-ficha-alquiler" id="contenedor-ficha-alquiler"></div>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- SECCIÓN INFERIOR: 4 TARJETAS INFORMATIVAS CON ACCESO A LIBROS CONTABLES -->
+<section class="seccion-regimenes-inferiores">
+    <div class="grid-cuatro-regimenes" id="contenedor-tarjetas-regimenes"></div>
+</section>
+
+<!-- BARRA CORPORATIVA EJECUTIVA: TIPOS DE EMPRESAS -->
+<section class="seccion-acceso-sociedades">
+    <div class="banner-sociedades-fintech">
+        <div class="info-banner-sociedades">
+            <span class="badge-sociedades">GUÍA SOCIETARIA PERÚ</span>
+            <h3>TIPOS DE EMPRESAS: ¿CUÁL TE CONVIENE?</h3>
+            <p>Compara de forma clara las características, cantidad de socios y el perfil ideal de E.I.R.L., S.R.L., S.A.C., S.A., S.Civil y S.A.C.S.</p>
+        </div>
+        <button type="button" class="btn-abrir-sociedades" onclick="abrirModalSociedades()">
+            <span>🏢</span> Ver Tipos de Empresas
+        </button>
+    </div>
+</section>
+
+<!-- =========================================================
+     VENTANA MODAL UNIVERSAL (LIBROS CONTABLES Y SOCIEDADES)
+     ========================================================= -->
+<div class="modal-overlay-fintech oculto" id="modal-universal-tuconta" onclick="cerrarModalPorFondo(event)">
+    <div class="modal-contenedor-fintech" role="dialog" aria-modal="true">
+        
+        <header class="modal-cabecera-fintech">
+            <div class="modal-titulos">
+                <span class="modal-badge-superior" id="modal-badge">NORMATIVA SUNAT</span>
+                <h2 id="modal-titulo-principal">Título del Modal</h2>
+            </div>
+            <button type="button" class="btn-cerrar-modal" onclick="cerrarModalUniversal()" aria-label="Cerrar ventana">
+                ✕
+            </button>
+        </header>
+
+        <div class="modal-cuerpo-fintech" id="modal-contenido-dinamico">
+            <!-- Inyección dinámica desde logica.js -->
+        </div>
+
+    </div>
+</div>

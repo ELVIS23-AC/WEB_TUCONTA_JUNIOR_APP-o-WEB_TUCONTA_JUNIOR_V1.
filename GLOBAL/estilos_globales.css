@@ -1,0 +1,366 @@
+/* ==========================================================================
+   TUCONTA JUNIOR — GLOBAL STYLESHEET
+   Dirección de Arte: Modern Corporate Fintech + Premium Educational UI
+   ========================================================================== */
+
+:root {
+    /* Paleta Institucional Principal */
+    --brand-navy: #0a2540;
+    --brand-blue: #0b4fb3;
+    --brand-blue-bright: #1d4ed8;
+    --brand-sky: #0284c7;
+    --brand-sky-soft: #e0f2fe;
+    
+    /* Acentos Corporativos (Rojo y Amarillo) */
+    --accent-red: #e11d48;
+    --accent-red-dark: #be123c;
+    --accent-red-soft: #ffe4e6;
+    --accent-yellow: #f59e0b;
+    --accent-yellow-dark: #d97706;
+    --accent-yellow-soft: #fef3c7;
+    --accent-emerald: #059669;
+
+    /* Superficies y Fondos */
+    --surface-canvas: #f8fafc;
+    --surface-white: #ffffff;
+    --surface-subtle: #f1f5f9;
+    --surface-ice: #f0f7ff;
+
+    /* Tipografía y Jerarquía de Texto */
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+
+    /* Bordes y Sombras Fintech */
+    --border-light: #e2e8f0;
+    --border-blue-subtle: #cbd5e1;
+    --shadow-sm: 0 2px 8px -2px rgba(10, 37, 64, 0.06);
+    --shadow-md: 0 12px 32px -8px rgba(10, 37, 64, 0.08), 0 4px 12px -3px rgba(10, 37, 64, 0.04);
+    --shadow-lg: 0 24px 48px -12px rgba(10, 37, 64, 0.12), 0 8px 20px -6px rgba(10, 37, 64, 0.05);
+
+    /* Fuentes */
+    --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ==========================================================================
+   DISEÑO DEL FONDO GENERAL (BLANCO ARQUITECTÓNICO CON GEOMETRÍA TÉCNICA)
+   ========================================================================== */
+html body {
+    background-color: var(--surface-canvas) !important;
+    /* Capas gráficas: Halos de color + Retícula de datos + Líneas técnicas */
+    background-image:
+        radial-gradient(circle at 6% 8%, rgba(11, 79, 179, 0.07) 0%, transparent 32%),
+        radial-gradient(circle at 94% 12%, rgba(245, 158, 11, 0.08) 0%, transparent 28%),
+        radial-gradient(circle at 88% 88%, rgba(225, 29, 72, 0.05) 0%, transparent 35%),
+        radial-gradient(circle at 15% 85%, rgba(2, 132, 199, 0.06) 0%, transparent 35%),
+        linear-gradient(to right, rgba(11, 79, 179, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(11, 79, 179, 0.035) 1px, transparent 1px),
+        repeating-linear-gradient(-45deg, transparent, transparent 140px, rgba(2, 132, 199, 0.018) 140px, rgba(2, 132, 199, 0.018) 141px) !important;
+    background-size: 
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        100% 100%,
+        36px 36px,
+        36px 36px,
+        100% 100% !important;
+    background-attachment: fixed !important;
+    color: var(--text-primary) !important;
+    font-family: var(--font-ui) !important;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Estructuras geométricas abstractas de fondo (No interfieren con clics) */
+html body::before {
+    content: '';
+    position: fixed;
+    top: -140px;
+    right: -140px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    border: 1px solid rgba(11, 79, 179, 0.08);
+    box-shadow:
+        inset 0 0 0 45px rgba(2, 132, 199, 0.02),
+        inset 0 0 0 90px rgba(245, 158, 11, 0.015),
+        0 0 0 45px rgba(11, 79, 179, 0.02);
+    pointer-events: none;
+    z-index: 0;
+}
+
+html body::after {
+    content: '';
+    position: fixed;
+    bottom: -180px;
+    left: -180px;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    border: 1px dashed rgba(11, 79, 179, 0.1);
+    box-shadow: inset 0 0 0 60px rgba(225, 29, 72, 0.015);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==========================================================================
+   BARRA DE NAVEGACIÓN SUPERIOR CORPORATIVA
+   ========================================================================== */
+.navbar {
+    height: 84px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-light);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px -4px rgba(10, 37, 64, 0.06);
+}
+
+/* Línea superior tricolor institucional (Azul, Rojo y Amarillo) */
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--brand-blue) 0%, 
+        var(--brand-sky) 55%, 
+        var(--accent-yellow) 78%, 
+        var(--accent-red) 100%
+    );
+}
+
+.navbar-inner {
+    max-width: 1220px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+}
+
+/* Cápsula de Identidad TuConta Junior */
+.brand-capsule {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    padding: 6px 22px 6px 8px;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+    border: 1px solid #cbd5e1;
+    border-radius: 60px;
+    box-shadow: 
+        0 4px 14px rgba(11, 79, 179, 0.08),
+        inset 0 1px 0 #ffffff;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.brand-capsule:hover {
+    border-color: var(--brand-sky);
+    box-shadow: 0 8px 22px rgba(11, 79, 179, 0.14);
+    transform: translateY(-1px);
+}
+
+/* Orbe de integración del logotipo real */
+.logo-orb {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    background: #ffffff;
+    border: 2px solid var(--brand-blue);
+    box-shadow: 0 2px 10px rgba(11, 79, 179, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-orb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: inset 0 0 4px rgba(10, 37, 64, 0.18);
+    pointer-events: none;
+}
+
+.logo-img-integrada {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1.18);
+    filter: contrast(1.04) saturate(1.05);
+    display: block;
+}
+
+.brand-text-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.brand-name-line {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+}
+
+.txt-tuconta {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--brand-navy);
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+.txt-junior {
+    font-size: 0.92rem;
+    font-weight: 800;
+    color: var(--brand-blue);
+    background: linear-gradient(135deg, #e0f2fe 0%, #fef3c7 100%);
+    border: 1px solid rgba(2, 132, 199, 0.25);
+    padding: 2px 8px;
+    border-radius: 6px;
+    letter-spacing: 1.2px;
+    line-height: 1.1;
+}
+
+.txt-tagline {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 1.3px;
+    margin-top: 4px;
+}
+
+/* ==========================================================================
+   NAVEGACIÓN DE MÓDULOS
+   ========================================================================== */
+.nav-links {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-btn {
+    background: var(--surface-white);
+    border: 1px solid var(--border-light);
+    color: var(--brand-navy);
+    padding: 0.68rem 1.35rem;
+    border-radius: 12px;
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background-color: var(--accent-yellow);
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.22);
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+    background: var(--brand-navy);
+    border-color: var(--brand-navy);
+    color: #ffffff;
+    box-shadow: 0 8px 20px -4px rgba(10, 37, 64, 0.25);
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL Y ESTADOS DE CARGA
+   ========================================================================== */
+.contenedor-principal {
+    max-width: 1220px;
+    margin: 2.4rem auto 4.5rem auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+}
+
+.loader-panel,
+.error-box {
+    background: var(--surface-white);
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    text-align: center;
+    color: var(--text-secondary);
+    max-width: 650px;
+    margin: 3rem auto;
+    box-shadow: var(--shadow-md);
+}
+
+.spinner-neon {
+    width: 38px;
+    height: 38px;
+    border: 3px solid var(--brand-sky-soft);
+    border-top-color: var(--brand-blue);
+    border-radius: 50%;
+    margin: 0 auto 1rem auto;
+    animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
+
+.error-box {
+    border-top: 4px solid var(--accent-red);
+}
+
+.error-box h3 {
+    color: var(--accent-red);
+    margin-bottom: 0.6rem;
+}
+
+.error-box code {
+    display: inline-block;
+    background: var(--surface-subtle);
+    color: var(--brand-navy);
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        height: auto;
+        padding: 0.85rem 0;
+    }
+    .navbar-inner {
+        flex-direction: column;
+        gap: 12px;
+    }
+    .contenedor-principal {
+        margin: 1.5rem auto 3rem auto;
+        padding: 0 16px;
+    }
+}

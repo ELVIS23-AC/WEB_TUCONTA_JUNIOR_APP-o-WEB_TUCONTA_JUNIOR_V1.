@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TuConta Junior | Simulador Tributario SUNAT</title>
+
+    <!-- Tipografías Corporativas: Plus Jakarta Sans y JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Hojas de estilo modulares -->
+    <link rel="stylesheet" href="GLOBAL/estilos_globales.css" id="css-global">
+    <link rel="stylesheet" href="MODULOS/IMPUESTOS/estilos_impuestos.css" id="css-modulo">
+
+    <!-- Blindaje de Estilos Anti-Caché (Garantiza renderizado perfecto inmediato) -->
+    <style>
+        :root {
+            --bg-night: #060b19;
+            --bg-panel: rgba(15, 23, 42, 0.82);
+            --bg-card: rgba(15, 23, 42, 0.68);
+            --border-glass: rgba(255, 255, 255, 0.09);
+            --border-cyan: rgba(14, 165, 233, 0.45);
+            --text-white: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-cyan: #0ea5e9;
+            --accent-emerald: #14b8a6;
+            --accent-red: #ef4444;
+            --font-ui: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-night);
+            background-image:
+                radial-gradient(circle at 12% 10%, rgba(20, 184, 166, 0.14), transparent 38%),
+                radial-gradient(circle at 88% 14%, rgba(14, 165, 233, 0.14), transparent 42%),
+                radial-gradient(circle at 50% 95%, rgba(239, 68, 68, 0.06), transparent 45%);
+            color: var(--text-white);
+            font-family: var(--font-ui);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        .oculto { display: none !important; }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER EJECUTIVO CON CÁPSULA DE MARCA UNIFICADA -->
+    <header class="navbar">
+        <div class="navbar-inner">
+            
+            <!-- LOGO E IDENTIDAD INTEGRADOS EN UNA SOLA PIEZA -->
+            <div class="brand-capsule" onclick="cargarModulo('IMPUESTOS')">
+                <div class="logo-orb">
+                    <img 
+                        src="ASSETS/logo.jpg.jpeg" 
+                        alt="TuConta Junior" 
+                        class="logo-img-integrada"
+                        onerror="if(this.src.indexOf('logo.jpg.jpeg')!==-1){this.src='ASSETS/logo.jpg';}else if(this.src.indexOf('ASSETS/logo.jpg')!==-1){this.src='assets/logo.jpg';}"
+                    >
+                </div>
+                <div class="brand-text-block">
+                    <div class="brand-name-line">
+                        <span class="txt-tuconta">TuConta</span>
+                        <span class="txt-junior">JUNIOR</span>
+                    </div>
+                    <span class="txt-tagline">INTELIGENCIA TRIBUTARIA SUNAT</span>
+                </div>
+            </div>
+
+            <!-- BOTÓN DE NAVEGACIÓN CORPORATIVO -->
+            <nav aria-label="Módulos del sistema">
+                <ul class="nav-links">
+                    <li>
+                        <button type="button" class="nav-btn active" onclick="cargarModulo('IMPUESTOS', this)">
+                            <span class="status-dot"></span>
+                            <span>Simulador de Regímenes y Alquileres</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL (#app-root) -->
+    <main id="app-root" class="contenedor-principal">
+        <div class="loader-panel">
+            <div class="spinner-neon"></div>
+            <p>Iniciando plataforma tributaria...</p>
+        </div>
+    </main>
+
+    <!-- ENRUTADOR DINÁMICO CON ACTUALIZACIÓN FORZADA DE CACHÉ -->
+    <script>
+        // Forzar recarga limpia de hojas CSS para evitar caché antiguo del navegador
+        (function actualizarEstilosSinCache() {
+            const stamp = Date.now();
+            const linkGlobal = document.getElementById('css-global');
+            const linkModulo = document.getElementById('css-modulo');
+            if (linkGlobal) linkGlobal.href = `GLOBAL/estilos_globales.css?v=${stamp}`;
+            if (linkModulo) linkModulo.href = `MODULOS/IMPUESTOS/estilos_impuestos.css?v=${stamp}`;
+        })();
+
+        async function cargarModulo(nombreCarpeta, botonPresionado) {
+            const root = document.getElementById('app-root');
+
+            if (botonPresionado) {
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                botonPresionado.classList.add('active');
+            }
+
+            const v = Date.now();
+            const rutaBase = `MODULOS/${nombreCarpeta}`;
+
+            try {
+                const respuestaVista = await fetch(`${rutaBase}/vista.html?v=${v}`, { cache: 'no-store' });
+                if (!respuestaVista.ok) {
+                    throw new Error(`HTTP ${respuestaVista.status}: No se encontró ${rutaBase}/vista.html`);
+                }
+                root.innerHTML = await respuestaVista.text();
+
+                await inyectarScript(`${rutaBase}/datos.js?v=${v}`, 'script-boveda-datos');
+                await inyectarScript(`${rutaBase}/logica.js?v=${v}`, 'script-motor-logica');
+
+                if (typeof window.inicializarModuloImpuestos === 'function') {
+                    window.inicializarModuloImpuestos();
+                }
+            } catch (error) {
+                console.error('[Auditoría TuConta Junior]:', error);
+                root.innerHTML = `
+                    <div class="error-box">
+                        <h3>⚠️ Error al cargar el módulo</h3>
+                        <p>Detalle: <code>${error.message}</code></p>
+                    </div>
+                `;
+            }
+        }
+
+        function inyectarScript(url, idScript) {
+            return new Promise((resolve, reject) => {
+                const previo = document.getElementById(idScript);
+                if (previo) previo.remove();
+
+                const s = document.createElement('script');
+                s.id = idScript;
+                s.src = url;
+                s.async = false;
+                s.onload = () => resolve();
+                s.onerror = () => reject(new Error(`No se pudo cargar ${url}`));
+                document.body.appendChild(s);
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            cargarModulo('IMPUESTOS');
+        });
+    </script>
+</body>
+</html>
